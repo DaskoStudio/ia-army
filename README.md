@@ -1,31 +1,61 @@
-> ℹ️ Dépôt vitrine — code de base / architecture ; fonctionnalités clés privées.
-
 # IA-ARMY
 
-Socle d’architecture pour un système multi-agents autour de Solana ; stratégies et intégrations privées non incluses.
+> Architecture skeleton of a multi-agent system built around Solana: market monitoring, decision support and prediction markets, coordinated by an orchestrator.
 
-## ✨ Fonctionnalités
+![Status](https://img.shields.io/badge/status-showcase-38f0c0?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Solana](https://img.shields.io/badge/Solana-9945FF?style=flat-square&logo=solana&logoColor=white)
 
-- API FastAPI avec `GET /health`.
-- Contrat abstrait `Agent.run()` et signature d’enregistrement d’un orchestrateur.
-- Exemple de prompt générique, sans action externe.
+> **ℹ️ Showcase repository.** Only the architecture is public. Strategies, integrations, keys and every agent implementation are private and **not included**.
 
-L’orchestrateur reste un stub et lève `NotImplementedError`. Aucun agent de trading, connexion Solana, notification ni tableau de bord fonctionnel n’est livré.
+---
 
-## 🧱 Structure
+## Table of contents
+
+- [Concept](#concept)
+- [Architecture](#architecture)
+- [What this repository contains](#what-this-repository-contains)
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
+- [Tech stack](#tech-stack)
+
+## Concept
+
+IA-ARMY splits a complex workflow into small, specialised agents instead of one monolithic bot. An orchestrator registers agents, routes work between them and exposes the whole system through a single API. The private version targets Solana market monitoring and prediction-market use cases.
+
+## Architecture
 
 ```text
-backend/main.py            API et santé
-backend/agents/base.py     Classe abstraite Agent
-backend/orchestrator.py    Signature register() non implémentée
-config/prompts/example.md  Prompt générique
-frontend/package.json      Manifeste React minimal (sans interface)
-core/, agents/, deploy/    Emplacements réservés
+┌────────────┐     ┌─────────────────────────┐     ┌───────────────┐
+│ Dashboard  │────►│  Backend (FastAPI)      │────►│ Orchestrator  │
+│ (React)    │     │  health · API           │     │ agent registry│
+└────────────┘     └─────────────────────────┘     └───────┬───────┘
+                                                           │
+                          ┌────────────────┬───────────────┤
+                          ▼                ▼               ▼
+                     ┌─────────┐     ┌──────────┐    ┌──────────┐
+                     │ Agent A │     │ Agent B  │    │ Agent …  │
+                     │ (Agent) │     │ (Agent)  │    │ (Agent)  │
+                     └─────────┘     └──────────┘    └──────────┘
 ```
 
-## 🚀 Lancer
+Each agent implements the same abstract `Agent.run()` contract, which keeps the orchestrator independent from what the agents actually do.
 
-Prérequis : Python 3.11+ ; Node.js/npm uniquement pour le manifeste frontend.
+## What this repository contains
+
+| Component | Status |
+|---|---|
+| `GET /health` | ✅ Returns `{"status":"ok"}` |
+| `Agent` abstract class (`run`) | ⛔ Contract only |
+| `Orchestrator.register(name, agent)` | ⛔ Signature only — raises `NotImplementedError` |
+| Generic prompt example (`config/prompts/example.md`) | ✅ No external action |
+| Frontend | Minimal React manifest, no interface |
+| Trading agents, Solana connections, notifications, dashboard | ❌ Not included |
+
+## Getting started
+
+**Prerequisites:** Python 3.11+. Node.js/npm is only needed for the frontend manifest.
 
 ```bash
 cd backend
@@ -35,13 +65,27 @@ pip install -r requirements.txt
 uvicorn main:app --reload --host 127.0.0.1
 ```
 
-Vérifier : `curl http://127.0.0.1:8000/health`. Documentation : `http://127.0.0.1:8000/docs`.
-Aucun secret requis. Le frontend ne propose pas de commande de démarrage : seule sa dépendance React est déclarée (`cd frontend && npm install`).
+```bash
+curl http://127.0.0.1:8000/health      # {"status":"ok"}
+```
 
-## 🛠️ Stack
+Interactive API docs: <http://127.0.0.1:8000/docs>. No secret is required. The frontend has no start command — only its React dependency is declared (`cd frontend && npm install`).
 
-Python · FastAPI · Uvicorn · React (manifeste). Solana et coordination avancée : architecture cible uniquement.
+## Project structure
 
-## 👤 Auteur
+```text
+backend/main.py           API and health check
+backend/agents/base.py    Abstract Agent class
+backend/orchestrator.py   register() signature (not implemented)
+config/prompts/           Generic prompt example
+frontend/package.json     Minimal React manifest
+core/ agents/ deploy/     Reserved placeholders
+```
 
-Konaté Adama (@DaskoStudio) — Ynov Campus
+## Tech stack
+
+Python · FastAPI · Uvicorn · React (manifest). Solana integration and advanced coordination are target architecture only.
+
+---
+
+**Author** — Konaté Adama · [github.com/DaskoStudio](https://github.com/DaskoStudio)
