@@ -1,48 +1,36 @@
-# IA-ARMY
+<div align="center">
 
-> Architecture skeleton of a multi-agent system built around Solana: market monitoring, decision support and prediction markets, coordinated by an orchestrator.
+<img src="./.github/banner.svg" alt="IA-ARMY" width="100%">
 
-![Status](https://img.shields.io/badge/status-showcase-38f0c0?style=flat-square)
-![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Solana](https://img.shields.io/badge/Solana-9945FF?style=flat-square&logo=solana&logoColor=white)
+**Architecture skeleton of a multi-agent system built around Solana: market monitoring, decision support and prediction markets, coordinated by an orchestrator.**
 
-> **ℹ️ Showcase repository.** Only the architecture is public. Strategies, integrations, keys and every agent implementation are private and **not included**.
+![Status](https://img.shields.io/badge/status-showcase-38f0c0?style=flat-square) ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) ![Solana](https://img.shields.io/badge/Solana-9945FF?style=flat-square&logo=solana&logoColor=white)
 
----
+[Concept](#-concept) · [Architecture](#-architecture) · [Getting started](#-getting-started) · [Tech stack](#-tech-stack)
 
-## Table of contents
+</div>
 
-- [Concept](#concept)
-- [Architecture](#architecture)
-- [What this repository contains](#what-this-repository-contains)
-- [Getting started](#getting-started)
-- [Project structure](#project-structure)
-- [Tech stack](#tech-stack)
+> [!IMPORTANT]
+> **Showcase repository.** Only the architecture is public. Strategies, integrations, keys and every agent implementation are private and **not included**.
 
-## Concept
+## 📖 Concept
 
 IA-ARMY splits a complex workflow into small, specialised agents instead of one monolithic bot. An orchestrator registers agents, routes work between them and exposes the whole system through a single API. The private version targets Solana market monitoring and prediction-market use cases.
 
-## Architecture
+## 🏗️ Architecture
 
-```text
-┌────────────┐     ┌─────────────────────────┐     ┌───────────────┐
-│ Dashboard  │────►│  Backend (FastAPI)      │────►│ Orchestrator  │
-│ (React)    │     │  health · API           │     │ agent registry│
-└────────────┘     └─────────────────────────┘     └───────┬───────┘
-                                                           │
-                          ┌────────────────┬───────────────┤
-                          ▼                ▼               ▼
-                     ┌─────────┐     ┌──────────┐    ┌──────────┐
-                     │ Agent A │     │ Agent B  │    │ Agent …  │
-                     │ (Agent) │     │ (Agent)  │    │ (Agent)  │
-                     └─────────┘     └──────────┘    └──────────┘
+```mermaid
+flowchart LR
+    UI["📊 Dashboard<br/>React"] --> API["⚙️ Backend<br/>FastAPI"]
+    API --> ORC["🧠 Orchestrator<br/>agent registry"]
+    ORC --> A1["🤖 Agent A"]
+    ORC --> A2["🤖 Agent B"]
+    ORC --> A3["🤖 Agent …"]
 ```
 
 Each agent implements the same abstract `Agent.run()` contract, which keeps the orchestrator independent from what the agents actually do.
 
-## What this repository contains
+## 📦 What this repository contains
 
 | Component | Status |
 |---|---|
@@ -53,7 +41,7 @@ Each agent implements the same abstract `Agent.run()` contract, which keeps the 
 | Frontend | Minimal React manifest, no interface |
 | Trading agents, Solana connections, notifications, dashboard | ❌ Not included |
 
-## Getting started
+## 🚀 Getting started
 
 **Prerequisites:** Python 3.11+. Node.js/npm is only needed for the frontend manifest.
 
@@ -71,7 +59,7 @@ curl http://127.0.0.1:8000/health      # {"status":"ok"}
 
 Interactive API docs: <http://127.0.0.1:8000/docs>. No secret is required. The frontend has no start command — only its React dependency is declared (`cd frontend && npm install`).
 
-## Project structure
+## 🗂️ Project structure
 
 ```text
 backend/main.py           API and health check
@@ -82,10 +70,14 @@ frontend/package.json     Minimal React manifest
 core/ agents/ deploy/     Reserved placeholders
 ```
 
-## Tech stack
+## 🧰 Tech stack
 
 Python · FastAPI · Uvicorn · React (manifest). Solana integration and advanced coordination are target architecture only.
 
 ---
 
-**Author** — Konaté Adama · [github.com/DaskoStudio](https://github.com/DaskoStudio)
+<div align="center">
+
+<sub>Built by <a href="https://github.com/DaskoStudio"><b>Konaté Adama</b></a> · <a href="https://github.com/DaskoStudio?tab=repositories">More projects</a></sub>
+
+</div>
