@@ -1,0 +1,9 @@
+{
+  "name": "ia-army-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Manifeste minimal ; interface privée non incluse.",
+  "dependencies": {
+    "react": "19.3.1"
+  }
+}
